@@ -3,6 +3,7 @@ package com.algafood.auth.algafoodauth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -20,6 +21,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     // configuração do password credentials grant no authorizationServer
     // configuração dos cliente permitido a receber o acess token
     // Configuração das aplicação "client" que pode acessar os recurso, usando o
@@ -28,17 +32,12 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient("algafood-web") // identifica o cliente
-                .secret(passwordEncoder.encode("web123")) // a senha do cliente
-                .authorizedGrantTypes("password") // o fluxo que esse criente pode fazer, precisa desse método
-                // ublic void configure(AuthorizationServerEndpointsConfigurer endpoints)
-                .scopes("write", "read") // o scope
-                .accessTokenValiditySeconds(60 * 60 * 6); // tempo de validação do token
-        // .and() // cadastrando mais de um cliente
-        // .withClient("app-mobile")
-        // .secret(passwordEncoder.encode("web123"))
-        // .authorizedGrantTypes("password")
-        // .scopes("write", "read");
+                .withClient("algafood-web")
+                .secret(passwordEncoder.encode("web123"))// padrão 12 h
+                .authorizedGrantTypes("password", "refresh_token")// padrão 30 dias
+                .scopes("write", "read")
+                .accessTokenValiditySeconds(60 * 60 * 6);
+
     }
 
     @Override
@@ -49,6 +48,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.authenticationManager(authenticationManager);
+        endpoints.authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService);
     }
 }
