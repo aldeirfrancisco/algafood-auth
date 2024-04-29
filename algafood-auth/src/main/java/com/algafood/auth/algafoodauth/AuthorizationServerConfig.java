@@ -33,10 +33,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients
                 .inMemory()
                 .withClient("algafood-web")
-                .secret(passwordEncoder.encode("web123"))// padrão 12 h
-                .authorizedGrantTypes("password", "refresh_token")// padrão 30 dias
+                .secret(passwordEncoder.encode("web123"))
+                .authorizedGrantTypes("password", "refresh_token")
                 .scopes("write", "read")
-                .accessTokenValiditySeconds(60 * 60 * 6);
+                .accessTokenValiditySeconds(6 * 60 * 60) // 6 h, padrão 12 h
+                .refreshTokenValiditySeconds(60 * 24 * 60 * 60); // 60 dias, padrão 30 dias
 
     }
 
@@ -49,6 +50,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+                .userDetailsService(userDetailsService)
+                .reuseRefreshTokens(false);
     }
 }
