@@ -39,6 +39,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .accessTokenValiditySeconds(6 * 60 * 60) // 6 h, padrão 12 h
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias, padrão 30 dias
                 .and()
+                // url para fazer login e ter acesso a code
+                // http://localhost:8081/oauth/authorize?response_type=code&client_id=foodAnalystics&state=abc&redirect_uri=http://aplicacao-cliente
+                .withClient("foodAnalystics")
+                .secret(passwordEncoder.encode("web123"))
+                .authorizedGrantTypes("authorization_code") // fluxo
+                .scopes("write", "read")
+                .redirectUris("http://aplicacao-cliente")
+                .and()
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))
                 .authorizedGrantTypes("client_credentials")
