@@ -52,7 +52,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .secret(passwordEncoder.encode("web123"))
                 .authorizedGrantTypes("authorization_code") // fluxo authorization_code
                 .scopes("write", "read")
-                .redirectUris("http://localhost:8082")
+                .redirectUris("http://aplicacao-cliente")
                 .and()
                 .withClient("webAdimin")
                 .authorizedGrantTypes("implicit") // fluxo Implicit Grant Type
