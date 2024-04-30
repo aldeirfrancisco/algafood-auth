@@ -34,22 +34,29 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .inMemory()
                 .withClient("algafood-web")
                 .secret(passwordEncoder.encode("web123"))
-                .authorizedGrantTypes("password", "refresh_token")
+                .authorizedGrantTypes("password", "refresh_token")// fluxo password
                 .scopes("write", "read")
                 .accessTokenValiditySeconds(6 * 60 * 60) // 6 h, padrão 12 h
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias, padrão 30 dias
                 .and()
-                // url para fazer login e ter acesso a code
-                // http://localhost:8081/oauth/authorize?response_type=code&client_id=foodAnalystics&state=abc&redirect_uri=http://aplicacao-cliente
+                // Configurando o fluxo authorization_code
+                // http://localhost:8081/oauth/authorize?response_type=code&client_id=foodAnalystics&state=abc&redirect_uri=http://http://localhost:8082
                 .withClient("foodanalytics")
                 .secret(passwordEncoder.encode("web123"))
-                .authorizedGrantTypes("authorization_code") // fluxo
+                .authorizedGrantTypes("authorization_code") // fluxo authorization_code
                 .scopes("write", "read")
                 .redirectUris("http://localhost:8082")
                 .and()
+                // Configurando o fluxo Implicit Grant Type
+                // http://localhost:8081/oauth/authorize?response_type=token&client_id=webAdimin&state=abc&redirect_uri=http://aplicacao-cliente
+                .withClient("webAdimin")
+                .authorizedGrantTypes("implicit") // fluxo Implicit Grant Type
+                .scopes("write", "read")
+                .redirectUris("http://aplicacao-cliente")
+                .and()
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))
-                .authorizedGrantTypes("client_credentials")
+                .authorizedGrantTypes("client_credentials")// fluxo client_credentials
                 .scopes("write", "read");
 
     }
