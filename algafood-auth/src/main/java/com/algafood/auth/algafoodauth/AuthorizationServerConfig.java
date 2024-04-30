@@ -41,11 +41,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .and()
                 // url para fazer login e ter acesso a code
                 // http://localhost:8081/oauth/authorize?response_type=code&client_id=foodAnalystics&state=abc&redirect_uri=http://aplicacao-cliente
-                .withClient("foodAnalystics")
+                .withClient("foodanalytics")
                 .secret(passwordEncoder.encode("web123"))
                 .authorizedGrantTypes("authorization_code") // fluxo
                 .scopes("write", "read")
-                .redirectUris("http://aplicacao-cliente")
+                .redirectUris("http://localhost:8082")
                 .and()
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))
