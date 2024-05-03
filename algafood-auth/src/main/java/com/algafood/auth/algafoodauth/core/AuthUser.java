@@ -16,16 +16,19 @@ public class AuthUser implements UserDetails {
     private String fullName;
     private String password;
     private String nomeCompleto;
-    public AuthUser(Usuario usuario) {
+    private Collection<GrantedAuthority> authorities;
+
+    public AuthUser(Usuario usuario, Collection<GrantedAuthority> authorities) {
         this.fullName = usuario.getEmail();
         this.password = usuario.getSenha();
         this.id = usuario.getId();
         this.nomeCompleto = usuario.getNome();
+        this.authorities = authorities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return this.authorities;
     }
 
     @Override
