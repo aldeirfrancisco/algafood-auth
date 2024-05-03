@@ -1,4 +1,4 @@
-package com.algafood.auth.algafoodauth;
+package com.algafood.auth.algafoodauth.core;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,19 +17,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // extends we
                                                                    // extends dessa class, mas ela
     // esta deprecated.
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.inMemoryAuthentication()
-                .withUser("aldeir")
-                .password(passwordEncoder().encode("1234"))
-                .roles("ADMIN")
-                .and()
-                .withUser("silva")
-                .password(passwordEncoder().encode("1234"))
-                .roles("ADMIN");
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -41,9 +28,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { // extends we
         return super.authenticationManager();
     }
 
-    @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        return super.userDetailsService();
-    }
 }
