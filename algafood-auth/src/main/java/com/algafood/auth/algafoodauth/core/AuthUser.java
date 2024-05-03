@@ -12,12 +12,15 @@ public class AuthUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
+    private long id;
     private String fullName;
     private String password;
-
+    private String nomeCompleto;
     public AuthUser(Usuario usuario) {
         this.fullName = usuario.getEmail();
         this.password = usuario.getSenha();
+        this.id = usuario.getId();
+        this.nomeCompleto = usuario.getNome();
     }
 
     @Override
@@ -33,6 +36,14 @@ public class AuthUser implements UserDetails {
     @Override
     public String getUsername() {
         return fullName;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public String getNomeCompleto() {
+        return nomeCompleto;
     }
 
     @Override
