@@ -55,25 +55,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .withClient("algafood-web")
                 .secret(passwordEncoder.encode("web123"))
                 .authorizedGrantTypes("password", "refresh_token")// fluxo password
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .accessTokenValiditySeconds(6 * 60 * 60) // 6 h, padrão 12 h
                 .refreshTokenValiditySeconds(60 * 24 * 60 * 60) // 60 dias, padrão 30 dias
                 .and()
                 .withClient("foodanalytics")
                 .secret(passwordEncoder.encode("web123"))
                 .authorizedGrantTypes("authorization_code") // fluxo authorization_code
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://aplicacao-cliente")
                 .and()
                 .withClient("webAdimin")
                 .authorizedGrantTypes("implicit") // fluxo Implicit Grant Type
-                .scopes("write", "read")
+                .scopes("WRITE", "READ")
                 .redirectUris("http://aplicacao-cliente")
                 .and()
                 .withClient("faturamento")
                 .secret(passwordEncoder.encode("faturamento123"))
                 .authorizedGrantTypes("client_credentials")// fluxo client_credentials
-                .scopes("write", "read");
+                .scopes("WRITE", "READ");
 
     }
 
